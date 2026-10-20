@@ -465,6 +465,7 @@ Bmob.initialize('c28c2b7bc5fa39604bacf45783d36dbf', '78b6da0acec9635715af2693dc5
 // ===== 登录逻辑 =====
 let isRegisterMode = false;
 let currentUser = null;
+let userName = '';
 
 const loginPage = document.getElementById('loginPage');
 const loginEmail = document.getElementById('loginEmail');
@@ -676,7 +677,6 @@ renderDishes();
 updateBar();
 
 // ===== 登录/昵称系统 =====
-let userName = '';
 const loginModal = document.getElementById('loginModal');
 const nameInput = document.getElementById('nameInput');
 const userTag = document.getElementById('userTag');
