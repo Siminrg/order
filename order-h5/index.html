@@ -475,6 +475,7 @@ const loginError = document.getElementById('loginError');
 const loginSub = document.getElementById('loginSub');
 const toRegister = document.getElementById('toRegister');
 const backToLogin = document.getElementById('backToLogin');
+const userTag = document.getElementById('userTag');
 
 toRegister.onclick = () => {
   isRegisterMode = true;
@@ -679,7 +680,6 @@ updateBar();
 // ===== 登录/昵称系统 =====
 const loginModal = document.getElementById('loginModal');
 const nameInput = document.getElementById('nameInput');
-const userTag = document.getElementById('userTag');
 
 function refreshUserTag() {
   if (userName) {
