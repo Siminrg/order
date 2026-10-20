@@ -647,8 +647,17 @@ document.getElementById('submitBtn').onclick = async () => {
     `\n---\n下单时间：${new Date().toLocaleString('zh-CN')}`;
 
   try {
-    const data = await Bmob.Function.call('sendOrderNotify', { content: title, desp: desp });
-    if (data.code === 0 || data.errno === 0) {
+    const res = await fetch('https://api.bmob.cn/1/functions/sendOrderNotify', {
+      method: 'POST',
+      headers: {
+        'X-Bmob-Application-Id': 'c28c2b7bc5fa39604bacf45783d36dbf',
+        'X-Bmob-REST-API-Key': '78b6da0acec9635715af2693dc5e229c',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ content: title, desp: desp })
+    });
+    const data = await res.json();
+    if (data.code === 0 || data.errno === 0 || data.errMsg === 'ok') {
       showToast('✅ 下单成功，TA 会收到通知');
       cart = {};
       document.getElementById('remark').value = '';
@@ -656,7 +665,7 @@ document.getElementById('submitBtn').onclick = async () => {
       updateBar();
       setTimeout(closeDrawer, 1200);
     } else {
-      showToast('提交失败：' + (data.message || data.error || '未知错误'));
+      showToast('提交失败：' + (data.message || data.error || JSON.stringify(data)));
     }
   } catch (e) {
     showToast('网络错误，请重试');
