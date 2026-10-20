@@ -534,6 +534,8 @@ if (savedUser) {
   onLoginSuccess(currentUser);
 }
 // ===== 配置区（改这里就行） =====
+const SEND_KEY = 'SCT444054T6arWAsw7Qcd9KZkmwcmdX246';
+
 // 菜单数据：自己增删改
 const MENU = [
   { name: '打瓦',   cat: '游戏', price: 1, desc: '下饭神器' },
@@ -647,17 +649,13 @@ document.getElementById('submitBtn').onclick = async () => {
     `\n---\n下单时间：${new Date().toLocaleString('zh-CN')}`;
 
   try {
-    const res = await fetch('https://api.bmob.cn/1/functions/sendOrderNotify', {
+    const res = await fetch(`https://sctapi.ftqq.com/${SEND_KEY}.send`, {
       method: 'POST',
-      headers: {
-        'X-Bmob-Application-Id': 'c28c2b7bc5fa39604bacf45783d36dbf',
-        'X-Bmob-REST-API-Key': '78b6da0acec9635715af2693dc5e229c',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ content: title, desp: desp })
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: `title=${encodeURIComponent(title)}&desp=${encodeURIComponent(desp)}`
     });
     const data = await res.json();
-    if (data.code === 0 || data.errno === 0 || data.errMsg === 'ok') {
+    if (data.code === 0) {
       showToast('✅ 下单成功，TA 会收到通知');
       cart = {};
       document.getElementById('remark').value = '';
@@ -665,7 +663,7 @@ document.getElementById('submitBtn').onclick = async () => {
       updateBar();
       setTimeout(closeDrawer, 1200);
     } else {
-      showToast('提交失败：' + (data.message || data.error || JSON.stringify(data)));
+      showToast('提交失败：' + (data.message || '未知错误'));
     }
   } catch (e) {
     showToast('网络错误，请重试');
